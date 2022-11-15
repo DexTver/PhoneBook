@@ -54,10 +54,18 @@ public class BookController {
     // curl localhost:8080/contacts
     // curl localhost:8080/contacts?num=666
     // curl localhost:8080/contacts?sub=I
+    // curl localhost:8080/contacts?number=1&limit=2
     @GetMapping("contacts")
     public ResponseEntity<List<Contact>> getContacts(
             @RequestParam(value = "num", required = false) String num,
-            @RequestParam(value = "sub", required = false) String sub) {
+            @RequestParam(value = "sub", required = false) String sub,
+            @RequestParam(value = "number", required = false) Integer number,
+            @RequestParam(value = "number", required = false) Integer limit) {
+        if (number >= 0 && limit > 0) {
+            return ResponseEntity.ok(full_list.stream().skip((long) limit * number).toList().stream().limit(limit).collect(Collectors.toList()));
+        } else if (number < 0 || limit <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         if (num != null) {
             return ResponseEntity.ok(full_list.stream().filter(x -> x.getName().contains(num)).collect(Collectors.toList()));
         } else if (sub != null) {
