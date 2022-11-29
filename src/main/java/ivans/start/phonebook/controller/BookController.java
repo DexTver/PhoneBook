@@ -60,7 +60,7 @@ public class BookController {
             @RequestParam(value = "num", required = false) String num,
             @RequestParam(value = "sub", required = false) String sub,
             @RequestParam(value = "number", required = false) Integer number,
-            @RequestParam(value = "number", required = false) Integer limit) {
+            @RequestParam(value = "limit", required = false) Integer limit) {
         if (number >= 0 && limit > 0) {
             return ResponseEntity.ok(full_list.stream().skip((long) limit * number).toList().stream().limit(limit).collect(Collectors.toList()));
         } else if (number < 0 || limit <= 0) {
